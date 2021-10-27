@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.niepengfei.io</groupId>
-    <artifactId>npf-io</artifactId>
+    <artifactId>nio-thinking</artifactId>
     <version>1.0-SNAPSHOT</version>
     <modules>
-        <module>npf-bio</module>
-        <module>npf-nio</module>
+        <module>bio-thinking1</module>
+        <module>nio-thinking1</module>
     </modules>
     <packaging>pom</packaging>
 

@@ -3,13 +3,12 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>npf-io</artifactId>
+        <artifactId>nio-thinking</artifactId>
         <groupId>com.niepengfei.io</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <packaging>jar</packaging>
-    <artifactId>npf-bio</artifactId>
+    <artifactId>nio-thinking1</artifactId>
 
 
 </project>
