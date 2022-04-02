@@ -4,3 +4,10 @@
 /*.iml
 /npf-bio/npf-bio.iml
 /npf-nio/npf-nio.iml
+/npf-bio/target/classes/com/niepengfei/io/version0/ClientApp.class
+/npf-bio/target/classes/com/niepengfei/io/version1/ClientApp.class
+/npf-bio/target/classes/com/niepengfei/io/version2/ClientApp.class
+/npf-bio/target/classes/com/niepengfei/io/version2/ServerApp$1.class
+/npf-bio/target/classes/com/niepengfei/io/version0/ServerApp.class
+/npf-bio/target/classes/com/niepengfei/io/version1/ServerApp.class
+/npf-bio/target/classes/com/niepengfei/io/version2/ServerApp.class

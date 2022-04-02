@@ -1,10 +1,9 @@
 package com.niepengfei.io.version1;
 
-import org.apache.commons.io.IOUtils;
 import java.io.InputStream;
-import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.Charset;
 
 /**
  *
@@ -36,14 +35,14 @@ public class ServerApp {
             //在这里会发生阻塞, 等待客户端来连
             //accept(6fd) = 7fd
             Socket clientSocket = serverSocket.accept();
-            System.out.println("已经建立连接");
+            System.out.println("已经建立连接, client port : " + clientSocket.getPort());
             System.out.println("等待客户端的数据....");
             InputStream inputStream = clientSocket.getInputStream();
             //在这里也会发生阻塞, 等待客户端发送数据
             int read = inputStream.read(buffer);
             if (read > 0) {
                 System.out.println("数据已经被接收");
-                String content = IOUtils.toString(buffer, "UTF-8");
+                String content = new String(buffer, Charset.defaultCharset());
                 System.out.println(content);
             }
         }
