@@ -18,15 +18,15 @@ public class ServerApp {
     public static void main(String[] args) throws Exception{
         ServerSocket serverSocket = new ServerSocket(8080);
         while (true) {
-            System.out.println("等待连接....");
+            System.out.println("waiting connecting....");
             //在这里会发生阻塞,即放弃CPU
             Socket clientSocket = serverSocket.accept();
-            System.out.println("已经建立连接, client port : " + clientSocket.getPort());
-            System.out.println("等待客户端的数据....");
+            System.out.println("connected, , client port : " + clientSocket.getPort());
+            System.out.println("waiting client data....");
             InputStream inputStream = clientSocket.getInputStream();
             int read = inputStream.read(buffer);
             if (read > 0) {
-                System.out.println("数据已经被接收");
+                System.out.println("client data connected");
                 String content = new String(buffer, Charset.defaultCharset());
                 System.out.println(content);
             }
