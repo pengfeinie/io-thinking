@@ -58,6 +58,8 @@
 
 <img src="img/2022-04-03_143757.png" align="left" style=' width:800px;height:100 px'/>
 
+
+
 第四步：我们通过vim out.13435察看文件内容。并通过 set nu进行行标的显示。
 
 <img src="img/2022-04-03_144358.png" align="left" style=' width:800px;height:100 px'/>
@@ -65,6 +67,12 @@
 第五步：我们查找关键字waiting connecting。
 
 <img src="img/2022-04-03_145444.png" align="left" style=' width:800px;height:100 px'/>
+
+第六步：我们可以看到此时服务端的Socket的状态是LISTEN。
+
+<img src="img/2022-04-03_150345.png" align="left" style=' width:800px;height:100 px'/>
+
+
 
 
 
