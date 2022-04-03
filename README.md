@@ -50,6 +50,20 @@
 
 <img src="img/2022-04-03_141226.png" align="left" style=' width:800px;height:100 px'/>
 
+第二步：编译并执行ServerApp。注意到，这里使用strace命令进行追踪程序执行过程中的每一个的system call。
+
+<img src="img/2022-04-03_143637.png" align="left" style=' width:800px;height:100 px'/>
+
+第三步：我们另开一个窗口，在当前目录下，在高版本的jdk中，第二个进程号对应的文件是主线程，可以看到如下内容。
+
+<img src="img/2022-04-03_143757.png" align="left" style=' width:800px;height:100 px'/>
+
+第四步：我们通过vim out.13435察看文件内容。并通过 set nu进行行标的显示。
+
+<img src="img/2022-04-03_144358.png" align="left" style=' width:800px;height:100 px'/>
+
+第五步：我们查找关键字waiting connecting。
+
 
 
 说白了，BIO在单线程的情况下，是不能实现并发的，因为它在accept和read方法上面阻塞了。那如何解决呢？请看下面。
