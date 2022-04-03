@@ -48,77 +48,65 @@
 
 第一步：将代码迁移到linux系统上面去。
 
-<img src="img/2022-04-03_141226.png" align="left" style=' width:800px;height:100 px'/>
+<img src="https://pengfeinie.github.io/images/2022-04-03_141226.png" align="left" style=' width:800px;height:100 px'/>
 
 第二步：编译并执行ServerApp。注意到，这里使用strace命令进行追踪程序执行过程中的每一个的system call。
 
-<img src="img/2022-04-03_143637.png" align="left" style=' width:800px;height:100 px'/>
+<img src="https://pengfeinie.github.io/images/2022-04-03_143637.png" align="left" style=' width:800px;height:100 px'/>
 
 第三步：我们另开一个窗口，在当前目录下，在高版本的jdk中，第二个进程号对应的文件是主线程，可以看到如下内容。
 
-<img src="img/2022-04-03_143757.png" align="left" style=' width:800px;height:100 px'/>
+<img src="https://pengfeinie.github.io/images/2022-04-03_143757.png" align="left" style=' width:800px;height:100 px'/>
 
 第四步：我们可以看到此时服务端的Socket的状态是LISTEN。
 
-<img src="img/2022-04-03_150345.png" align="left" style=' width:800px;height:100 px'/>
+<img src="https://pengfeinie.github.io/images/2022-04-03_150345.png" align="left" style=' width:800px;height:100 px'/>
 
 第五步：我们通过vim out.13435察看文件内容。并通过 set nu进行行标的显示。
 
-<img src="img/2022-04-03_144358.png" align="left" style=' width:800px;height:100 px'/>
+<img src="https://pengfeinie.github.io/images/2022-04-03_144358.png" align="left" style=' width:800px;height:100 px'/>
 
-第五步：我们查找关键字waiting connecting。
+第六步：我们查找关键字waiting connecting。
 
-<img src="img/2022-04-03_145444.png" align="left" style=' width:800px;height:100 px'/>
+<img src="https://pengfeinie.github.io/images/2022-04-03_145444.png" align="left" style=' width:800px;height:100 px'/>
 
-第六步：使用tail -f out.13435进行日志追踪。
+第七步：使用tail -f out.13435进行日志追踪。
 
-<img src="img/2022-04-03_151544.png" align="left" style=' width:800px;height:100 px'/>
+<img src="https://pengfeinie.github.io/images/2022-04-03_151544.png" align="left" style=' width:800px;height:100 px'/>
 
-第七步：使用客户端进行连接。
+第八步：使用客户端进行连接。
 
-<img src="img/2022-04-03_152320.png" align="left" style=' width:800px;height:100 px'/>
+<img src="https://pengfeinie.github.io/images/2022-04-03_152320.png" align="left" style=' width:800px;height:100 px'/>
 
-<img src="img/2022-04-03_152354.png" align="left" style=' width:800px;height:100 px'/>
+<img src="https://pengfeinie.github.io/images/2022-04-03_152354.png" align="left" style=' width:800px;height:100 px'/>
 
 这个时候我们发现out.13435文件内容发生了变化。
 
-<img src="img/2022-04-03_152511.png" align="left" style='width:800px'/>
+<img src="https://pengfeinie.github.io/images/2022-04-03_152511.png" align="left" style='width:800px'/>
 
 我们可以看到此时服务端的Socket的状态。
 
-<img src="img/2022-04-03_153042.png" align="left" style='width:800px'/>
+<img src="https://pengfeinie.github.io/images/2022-04-03_153042.png" align="left" style='width:800px'/>
 
 我们再启动另一个客户端，发现怎么也连接不上服务端。因为服务端没有打印任何信息，目前服务端控制台出现的信息还是第一个客户端连接上来的时候打印的。那么这个服务端相当于瘫痪了，因为没有任何客户端可以连接上来了。直到我们的第一个客户端发数据上来了，第二个客户端才可以连接上。
 
-<img src="img/2022-04-03_153713.png" align="left" style='width:800px'/>
+<img src="https://pengfeinie.github.io/images/2022-04-03_153713.png" align="left" style='width:800px'/>
 
 现在我们让第一个客户端发送数据给服务端。
 
-<img src="img/2022-04-03_153910.png" align="left" style='width:800px'/>
+<img src="https://pengfeinie.github.io/images/2022-04-03_153910.png" align="left" style='width:800px'/>
 
-<img src="img/2022-04-03_153946.png" align="left" style='width:800px'/>
+<img src="https://pengfeinie.github.io/images/2022-04-03_153946.png" align="left" style='width:800px'/>
 
 我们发现数据已经被服务端接收到了，同时第二个客户端已经连接上来了。
 
-<img src="img/2022-04-03_154122.png" align="left" style='width:800px'/>
+<img src="https://pengfeinie.github.io/images/2022-04-03_154122.png" align="left" style='width:800px'/>
 
 这个时候我们发现out.13435文件内容发生了变化。
 
-<img src="img/2022-04-03_154316.png" align="left" style='width:800px'/>
-
-
-
-<img src="https://cdn.nlark.com/yuque/0/2020/jpeg/749466/1583991392310-7011efe9-8c91-46db-8e2b-b96902357a67.jpeg" align="left" style='width:800px'/>
+<img src="https://pengfeinie.github.io/images/2022-04-03_154316.png" align="left" style='width:800px'/>
 
 说白了，BIO在单线程的情况下，是不能实现并发的，因为它在accept和read方法上面阻塞了。那如何解决呢？请看下面。
-
-
-
-
-
-
-
-
 
 ## 1.4 BIO在多线程情况下可以解决并发问题
 
