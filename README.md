@@ -38,8 +38,33 @@
 
 ### 1.3.1 如何证明
 
-第一步：我们启动服务端。那么服务端必须阻塞在accept方法上面，等待客户端来连。<br />![](https://cdn.nlark.com/yuque/0/2020/jpeg/749466/1583991392148-3aabd2f9-818a-4809-973e-7c06f14b8757.jpeg#align=left&display=inline&height=478&margin=%5Bobject%20Object%5D&originHeight=478&originWidth=801&size=0&status=done&style=none&width=801)<br />第二步：我们启动客户端，连接到服务端之后，一直不发送数据，让服务端一直阻塞在read方法上面。如果能在服务端控制台看到如下信息，那就证明我们的客户端连接上来了。<br />![](https://cdn.nlark.com/yuque/0/2020/png/749466/1583991392124-4b4fb342-08ce-4962-8f7f-825fa738647b.png#align=left&display=inline&height=464&margin=%5Bobject%20Object%5D&originHeight=464&originWidth=777&size=0&status=done&style=none&width=777)<br />第三步：我们再启动另一个客户端，发现怎么也连接不上服务端。因为服务端没有打印任何信息，目前服务端控制台出现的信息还是第一个客户端连接上来的时候打印的。那么这个服务端相当于瘫痪了，因为没有任何客户端可以连接上来了。直到我们的第一个客户端发数据上来了，第二个客户端才可以连接上，不信你可以继续往下看。<br />![](https://cdn.nlark.com/yuque/0/2020/png/749466/1583991392140-dce9b18b-19d9-4479-b414-77002a8daa77.png#align=left&display=inline&height=502&margin=%5Bobject%20Object%5D&originHeight=502&originWidth=782&size=0&status=done&style=none&width=782)<br />第四步：第一个客户端发送数据给服务端。<br />![](https://cdn.nlark.com/yuque/0/2020/png/749466/1583991392147-7f5bdc6d-6ff0-4600-924f-3f867bcd7400.png#align=left&display=inline&height=412&margin=%5Bobject%20Object%5D&originHeight=412&originWidth=793&size=0&status=done&style=none&width=793)<br />这个时候，你请看服务端的控台。第一个客户端的数据已经接收到了，第二个客户端也连接上来了。<br />![](https://cdn.nlark.com/yuque/0/2020/jpeg/749466/1583991392310-7011efe9-8c91-46db-8e2b-b96902357a67.jpeg#align=left&display=inline&height=559&margin=%5Bobject%20Object%5D&originHeight=559&originWidth=799&size=0&status=done&style=none&width=799)<br />说白了，BIO在单线程的情况下，是不能实现并发的，因为它在accept和read方法上面阻塞了。那如何解决呢？请看下面。
-<a name="LhFzL"></a>
+#### 1.3.1.1 证明一
+
+第一步：我们启动服务端。那么服务端必须阻塞在accept方法上面，等待客户端来连。<br />![](https://cdn.nlark.com/yuque/0/2020/jpeg/749466/1583991392148-3aabd2f9-818a-4809-973e-7c06f14b8757.jpeg#align=left&display=inline&height=478&margin=%5Bobject%20Object%5D&originHeight=478&originWidth=801&size=0&status=done&style=none&width=801)<br />第二步：我们启动客户端，连接到服务端之后，一直不发送数据，让服务端一直阻塞在read方法上面。如果能在服务端控制台看到如下信息，那就证明我们的客户端连接上来了。<br />![](https://cdn.nlark.com/yuque/0/2020/png/749466/1583991392124-4b4fb342-08ce-4962-8f7f-825fa738647b.png#align=left&display=inline&height=464&margin=%5Bobject%20Object%5D&originHeight=464&originWidth=777&size=0&status=done&style=none&width=777)<br />第三步：我们再启动另一个客户端，发现怎么也连接不上服务端。因为服务端没有打印任何信息，目前服务端控制台出现的信息还是第一个客户端连接上来的时候打印的。那么这个服务端相当于瘫痪了，因为没有任何客户端可以连接上来了。直到我们的第一个客户端发数据上来了，第二个客户端才可以连接上，不信你可以继续往下看。<br />![](https://cdn.nlark.com/yuque/0/2020/png/749466/1583991392140-dce9b18b-19d9-4479-b414-77002a8daa77.png#align=left&display=inline&height=502&margin=%5Bobject%20Object%5D&originHeight=502&originWidth=782&size=0&status=done&style=none&width=782)<br />第四步：第一个客户端发送数据给服务端。<br />![](https://cdn.nlark.com/yuque/0/2020/png/749466/1583991392147-7f5bdc6d-6ff0-4600-924f-3f867bcd7400.png#align=left&display=inline&height=412&margin=%5Bobject%20Object%5D&originHeight=412&originWidth=793&size=0&status=done&style=none&width=793)<br />这个时候，你请看服务端的控台。第一个客户端的数据已经接收到了，第二个客户端也连接上来了。<br />![](https://cdn.nlark.com/yuque/0/2020/jpeg/749466/1583991392310-7011efe9-8c91-46db-8e2b-b96902357a67.jpeg#align=left&display=inline&height=559&margin=%5Bobject%20Object%5D&originHeight=559&originWidth=799&size=0&status=done&style=none&width=799)<br />
+
+#### 1.3.1.2 证明二
+
+上面均是在Java代码层面进行的演示， 接下来我们将代码放到linux上面去,看看底层到底有哪些系统调用。
+
+第一步：将代码迁移到linux系统上面去。
+
+![](images/2022-04-03_141226.png)
+
+
+
+
+
+
+
+说白了，BIO在单线程的情况下，是不能实现并发的，因为它在accept和read方法上面阻塞了。那如何解决呢？请看下面。
+
+
+
+
+
+
+
+
 
 ## 1.4 BIO在多线程情况下可以解决并发问题
 
