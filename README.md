@@ -88,6 +88,24 @@
 
 <img src="img/2022-04-03_153042.png" align="left" style='width:800px'/>
 
+我们再启动另一个客户端，发现怎么也连接不上服务端。因为服务端没有打印任何信息，目前服务端控制台出现的信息还是第一个客户端连接上来的时候打印的。那么这个服务端相当于瘫痪了，因为没有任何客户端可以连接上来了。直到我们的第一个客户端发数据上来了，第二个客户端才可以连接上。
+
+<img src="img/2022-04-03_153713.png" align="left" style='width:800px'/>
+
+现在我们让第一个客户端发送数据给服务端。
+
+<img src="img/2022-04-03_153910.png" align="left" style='width:800px'/>
+
+<img src="img/2022-04-03_153946.png" align="left" style='width:800px'/>
+
+我们发现数据已经被服务端接收到了，同时第二个客户端已经连接上来了。
+
+<img src="img/2022-04-03_154122.png" align="left" style='width:800px'/>
+
+这个时候我们发现out.13435文件内容发生了变化。
+
+<img src="img/2022-04-03_154316.png" align="left" style='width:800px'/>
+
 
 
 
