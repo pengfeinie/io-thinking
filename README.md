@@ -64,6 +64,8 @@
 
 第五步：我们查找关键字waiting connecting。
 
+<img src="img/2022-04-03_145444.png" align="left" style=' width:800px;height:100 px'/>
+
 
 
 说白了，BIO在单线程的情况下，是不能实现并发的，因为它在accept和read方法上面阻塞了。那如何解决呢？请看下面。
