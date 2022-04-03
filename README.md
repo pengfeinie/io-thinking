@@ -48,11 +48,7 @@
 
 第一步：将代码迁移到linux系统上面去。
 
-![](images/2022-04-03_141226.png)
-
-
-
-
+<img src="img/2022-04-03_141226.png" align="left" style=' width:800px;height:100 px'/>
 
 
 
