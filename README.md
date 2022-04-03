@@ -108,7 +108,7 @@
 
 
 
-
+<img src="https://cdn.nlark.com/yuque/0/2020/jpeg/749466/1583991392310-7011efe9-8c91-46db-8e2b-b96902357a67.jpeg" align="left" style='width:800px'/>
 
 说白了，BIO在单线程的情况下，是不能实现并发的，因为它在accept和read方法上面阻塞了。那如何解决呢？请看下面。
 
