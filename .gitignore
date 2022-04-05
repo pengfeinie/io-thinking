@@ -11,3 +11,12 @@
 /npf-bio/target/classes/com/niepengfei/io/version0/ServerApp.class
 /npf-bio/target/classes/com/niepengfei/io/version1/ServerApp.class
 /npf-bio/target/classes/com/niepengfei/io/version2/ServerApp.class
+/*.project
+/bio-thinking1/*.classpath
+/bio-thinking1/*.gitignore
+/bio-thinking1/*.project
+/bio-thinking1/.settings/*.prefs
+/nio-thinking1/*.classpath
+/nio-thinking1/*.gitignore
+/nio-thinking1/*.project
+/nio-thinking1/.settings/*.prefs

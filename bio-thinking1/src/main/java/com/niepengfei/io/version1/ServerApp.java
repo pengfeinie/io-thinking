@@ -24,7 +24,8 @@ public class ServerApp {
 
     private static final byte[] buffer = new byte[1024];
 
-    public static void main(String[] args) throws Exception{
+    @SuppressWarnings("resource")
+	public static void main(String[] args) throws Exception{
         //socket() = 6fd
         //bind(6fd,8080)
         //listen(fd)
@@ -34,10 +35,10 @@ public class ServerApp {
             System.out.println("waiting connecting....");
             //在这里会发生阻塞, 等待客户端来连
             //accept(6fd) = 7fd
-            Socket clientSocket = serverSocket.accept();
-            System.out.println("connected, client port : " + clientSocket.getPort());
+            Socket cs = serverSocket.accept();
+            System.out.println("connected, client port : " + cs.getPort());
             System.out.println("waiting client data....");
-            InputStream inputStream = clientSocket.getInputStream();
+            InputStream inputStream = cs.getInputStream();
             //在这里也会发生阻塞, 等待客户端发送数据
             int read = inputStream.read(buffer);
             if (read > 0) {

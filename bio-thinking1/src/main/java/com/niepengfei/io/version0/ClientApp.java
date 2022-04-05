@@ -3,7 +3,6 @@ package com.niepengfei.io.version0;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.Scanner;
 
 /**
  * <p>
@@ -16,7 +15,8 @@ import java.util.Scanner;
  */
 public class ClientApp {
 
-    public static void main(String[] args) throws Exception{
+    @SuppressWarnings("resource")
+	public static void main(String[] args) throws Exception{
         Socket socket = new Socket();
         socket.connect(new InetSocketAddress(8080));
         OutputStream outputStream = socket.getOutputStream();

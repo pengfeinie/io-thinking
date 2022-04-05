@@ -16,7 +16,8 @@ import java.util.Scanner;
  */
 public class ClientApp {
 
-    public static void main(String[] args) throws Exception{
+    @SuppressWarnings("resource")
+	public static void main(String[] args) throws Exception{
         Socket socket = new Socket();
         socket.connect(new InetSocketAddress(8080));
         OutputStream outputStream = socket.getOutputStream();

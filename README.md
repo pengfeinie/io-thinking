@@ -1,3 +1,11 @@
+
+
+
+
+
+
+
+
 # Linux内核中网络IO的演变过程
 
 * [1\. 初步了解BIO](#1-初步了解bio)
@@ -33,18 +41,59 @@
 
 ## 1.1 服务端
 
-现在我们来写一个很简单的BIO实现的服务端。当我们把服务端启动的时候，服务端将会阻塞在下面的这行代码，目的是等待客户端来连接。<br />serverSocket.accept();<br />![](https://cdn.nlark.com/yuque/0/2020/jpeg/749466/1583991392084-5b235027-fcf3-493b-aad5-b709d87e2e1e.jpeg#align=left&display=inline&height=445&margin=%5Bobject%20Object%5D&originHeight=445&originWidth=801&size=0&status=done&style=none&width=801)
-<a name="5cZbu"></a>
+现在我们来写一个很简单的BIO实现的服务端。当我们把服务端启动的时候，服务端将会阻塞在下面的这行代码，目的是等待客户端来连接。<br />serverSocket.accept();<br />
+
+<img src="img/2022-04-05_110841.png" align="left" style='width:800px'/>
 
 ## 1.2 客户端
 
-当我们运行客户端，服务端将打印出客户端发来的数据，然后程序再次阻塞，等待客户端来连接，因为我们的服务端采用了while 循环。<br />![](https://cdn.nlark.com/yuque/0/2020/jpeg/749466/1583991392120-17446479-d7e6-4d1e-a017-e986abb7418e.jpeg#align=left&display=inline&height=476&margin=%5Bobject%20Object%5D&originHeight=476&originWidth=799&size=0&status=done&style=none&width=799)
-<a name="kQXNm"></a>
+当我们运行客户端，服务端将打印出客户端发来的数据，然后程序再次阻塞，等待客户端来连接，因为我们的服务端采用了while 循环。<br />
+
+```
+public class ClientApp {
+
+    @SuppressWarnings("resource")
+	public static void main(String[] args) throws Exception{
+        Socket socket = new Socket();
+        socket.connect(new InetSocketAddress(8080));
+        OutputStream outputStream = socket.getOutputStream();
+        outputStream.write("hello world \n".getBytes());
+    }
+}
+```
+
+<img src="img/2022-04-05_154516.png" align="left" style='width:800px'/>
 
 ## 1.3 BIO在单线程情况下无法解决并发问题
 
-客户端假设如上面所写那样，你永远都体会不到一点，那就是服务端的以下代码也是阻塞的，即read方法是阻塞的。为什么这么说呢？上述那个客户端的例子一点都不好，可以说非常的差劲，但是几乎所有学习BIO编程的Java程序员都是从这个例子中学习过来的，我真想把最开始写这个例子程序的人摁到地上摩擦，简直是误人子弟。<br />inputStream.read(buffer);<br />我们来看一下，我把客户端的代码修改一下。让客户端连接上服务端的时候，不要立即去发数据，而是在那里等待一会，这样你就可以很明显的看到，服务端将会阻塞在read方法上面。不信你可以看看，当我们运行客户端的时候，服务端的控制台将会打印如下信息，这就足以说明服务端已经阻塞在read方法上面，等待客户端发送数据。<br />![](https://cdn.nlark.com/yuque/0/2020/jpeg/749466/1583991392133-04e0b635-bea8-4b77-8388-b0888fc5bced.jpeg#align=left&display=inline&height=401&margin=%5Bobject%20Object%5D&originHeight=401&originWidth=801&size=0&status=done&style=none&width=801)<br />之后，我在客户端的控制台发送数据，随即你可以在服务端看到接收的数据，然后服务端打印出来之后，再次阻塞在accept方法上面，等待客户端的链接。<br />![](https://cdn.nlark.com/yuque/0/2020/jpeg/749466/1583991392090-ad7ec2d4-3055-4dba-9bb1-24b646fc1d37.jpeg#align=left&display=inline&height=449&margin=%5Bobject%20Object%5D&originHeight=449&originWidth=794&size=0&status=done&style=none&width=794)<br />然后我们再到服务端的控制台看下：<br />![](https://cdn.nlark.com/yuque/0/2020/jpeg/749466/1583991392113-0c6c2467-4db6-45c6-b551-033a29aeb507.jpeg#align=left&display=inline&height=518&margin=%5Bobject%20Object%5D&originHeight=518&originWidth=814&size=0&status=done&style=none&width=814)<br />通过以上分析，采用传统的BIO编程的话，会造成两个地方阻塞。第一个就是accept，等待客户端来连。第二个就是read，等待客户端发送数据。这两个阻塞会造成什么问题呢？那就决定了如果要让BIO实现并发，那么就必须要借助多线程。写到这里，可能还是有人不明白，我真的是醉了，好吧。如果你还不相信，那么下面我就用例子来证明这些理论，好吧。
-<a name="ckmJt"></a>
+客户端假设如上面所写那样，你永远都体会不到一点，那就是服务端的以下代码也是阻塞的，即read方法是阻塞的。为什么这么说呢？上述那个客户端的例子一点都不好，可以说非常的差劲，但是几乎所有学习BIO编程的Java程序员都是从这个例子中学习过来的，我真想把最开始写这个例子程序的人摁到地上摩擦，简直是误人子弟。<br />inputStream.read(buffer);<br />我们来看一下，我把客户端的代码修改一下。让客户端连接上服务端的时候，不要立即去发数据，而是在那里等待一会，这样你就可以很明显的看到，服务端将会阻塞在read方法上面。不信你可以看看，当我们运行客户端的时候，服务端的控制台将会打印如下信息，这就足以说明服务端已经阻塞在read方法上面，等待客户端发送数据。<br />
+
+```
+public class ClientApp {
+
+    @SuppressWarnings("resource")
+	public static void main(String[] args) throws Exception{
+        Socket socket = new Socket();
+        socket.connect(new InetSocketAddress(8080));
+        OutputStream outputStream = socket.getOutputStream();
+        Scanner scan = new Scanner(System.in);
+        String content = scan.nextLine();
+        outputStream.write(content.getBytes());
+    }
+}
+```
+
+<img src="img/2022-04-05_155036.png" align="left" style='width:800px'/>
+
+之后，我在客户端的控制台发送数据，随即你可以在服务端看到接收的数据，然后服务端打印出来之后，再次阻塞在accept方法上面，等待客户端的链接。<br />
+
+<img src="img/2022-04-05_155743.png" align="left" style='width:800px'/>
+
+然后我们再到服务端的控制台看下：<br />
+
+<img src="img/2022-04-05_155942.png" align="left" style='width:800px'/>
+
+通过以上分析，采用传统的BIO编程的话，会造成两个地方阻塞。第一个就是accept，等待客户端来连。第二个就是read，等待客户端发送数据。这两个阻塞会造成什么问题呢？那就决定了如果要让BIO实现并发，那么就必须要借助多线程。写到这里，可能还是有人不明白，我真的是醉了，好吧。如果你还不相信，那么下面我就用例子来证明这些理论，好吧。
 
 ### 1.3.1 如何证明
 
