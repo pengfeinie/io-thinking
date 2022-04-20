@@ -18,31 +18,15 @@ import java.util.concurrent.TimeUnit;
 public class ServerNioApp {
 
     public static void main(String[] args) throws Exception{
-
-
         ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
         serverSocketChannel.bind(new InetSocketAddress(8080));
         serverSocketChannel.configureBlocking(false);
-
         List<SocketChannel> clientSocketList = new ArrayList<>(16);
-
         while (true){
             TimeUnit.SECONDS.sleep(1);
             SocketChannel clientSocket = serverSocketChannel.accept();
-            if (clientSocket == null) {
-                List<SocketChannel> clientList = new ArrayList<>(clientSocketList);
-                for (SocketChannel socketChannel : clientList ) {
-                    ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
-                    int read = socketChannel.read(byteBuffer);
-                    byteBuffer.flip();
-                    if (read > 0) {
-                        System.out.println(new String(byteBuffer.array()));
-                    } else if (read < 0){
-                        clientSocketList.remove(socketChannel);
-                    }
-                }
-            } else {
-                System.out.println("新客户端 ：" + clientSocket.getRemoteAddress());
+            if (clientSocket != null) {
+            	System.out.println("client address ：" + clientSocket.getRemoteAddress());
                 clientSocket.configureBlocking(false);
                 clientSocketList.add(clientSocket);
                 List<SocketChannel> clientList = new ArrayList<>(clientSocketList);
@@ -56,6 +40,18 @@ public class ServerNioApp {
                         clientSocketList.remove(socketChannel);
                     }
                 }
+            } else {
+            	 List<SocketChannel> clientList = new ArrayList<>(clientSocketList);
+                 for (SocketChannel socketChannel : clientList ) {
+                     ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+                     int read = socketChannel.read(byteBuffer);
+                     byteBuffer.flip();
+                     if (read > 0) {
+                         System.out.println(new String(byteBuffer.array()));
+                     } else if (read < 0){
+                         clientSocketList.remove(socketChannel);
+                     }
+                 }
             }
         }
     }
