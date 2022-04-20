@@ -15,12 +15,10 @@ public class ServerApp {
 
     private static final byte[] buffer = new byte[1024];
 
-    @SuppressWarnings("resource")
 	public static void main(String[] args) throws Exception{
         ServerSocket serverSocket = new ServerSocket(8080);
         while (true) {
             System.out.println("waiting connecting....");
-            //在这里会发生阻塞,即放弃CPU
             Socket cs = serverSocket.accept();
             System.out.println("connected,client port : " + cs.getPort());
             System.out.println("waiting client data....");
