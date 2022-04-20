@@ -15,6 +15,7 @@ public class ServerApp {
 
     private static final byte[] buffer = new byte[1024];
 
+	@SuppressWarnings("resource")
 	public static void main(String[] args) throws Exception{
         ServerSocket serverSocket = new ServerSocket(8080);
         while (true) {

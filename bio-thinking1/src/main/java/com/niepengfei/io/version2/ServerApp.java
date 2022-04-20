@@ -1,6 +1,5 @@
 package com.niepengfei.io.version2;
 
-import org.apache.commons.io.IOUtils;
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -22,18 +21,12 @@ import java.nio.charset.Charset;
  */
 public class ServerApp {
 
-    public static void main(String[] args) throws Exception{
-
+    @SuppressWarnings("resource")
+	public static void main(String[] args) throws Exception{
         byte[] buffer = new byte[1024];
-        //socket() = 6fd
-        //bind(6fd,8080)
-        //listen(fd)
         ServerSocket serverSocket = new ServerSocket(8080);
-
         while (true) {
             System.out.println("waiting connecting....");
-            //在这里会发生阻塞, 等待客户端来连
-            //accept(6fd) = 7fd
             Socket clientSocket = serverSocket.accept();
             System.out.println("connected, client port : " + clientSocket.getPort());
             System.out.println("waiting client data....");
@@ -42,16 +35,13 @@ public class ServerApp {
                 public void run() {
                     try {
                         InputStream inputStream = clientSocket.getInputStream();
-                        //在这里也会发生阻塞, 等待客户端发送数据
                         int read = inputStream.read(buffer);
                         if (read > 0) {
                             System.out.println("client data connected");
                             String content = new String(buffer, Charset.defaultCharset());
                             System.out.println(content);
                         }
-                    }catch (Exception e){
-
-                    }
+                    }catch (Exception e){}
                 }
             };
             Thread t1 = new Thread(task);

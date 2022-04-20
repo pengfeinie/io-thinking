@@ -26,20 +26,13 @@ public class ServerApp {
 
     @SuppressWarnings("resource")
 	public static void main(String[] args) throws Exception{
-        //socket() = 6fd
-        //bind(6fd,8080)
-        //listen(fd)
         ServerSocket serverSocket = new ServerSocket(8080);
-
         while (true) {
             System.out.println("waiting connecting....");
-            //在这里会发生阻塞, 等待客户端来连
-            //accept(6fd) = 7fd
             Socket cs = serverSocket.accept();
             System.out.println("connected, client port : " + cs.getPort());
             System.out.println("waiting client data....");
             InputStream inputStream = cs.getInputStream();
-            //在这里也会发生阻塞, 等待客户端发送数据
             int read = inputStream.read(buffer);
             if (read > 0) {
                 System.out.println("client data connected");
